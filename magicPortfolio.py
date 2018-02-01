@@ -7,10 +7,8 @@ import collections
 from datetime import date
 from StockHolding import StockHolding
 from Portfolio import Portfolio
+from configuration import price_api_key
 
-
-##google_api_key = 'AIzaSyAiGL6je2OxUeM3_15wGrDiL7jexwLE7nk'
-price_api_key = 'NPO3RFGRVTFKRYCL'
 
 scope = ['http://spreadsheets.google.com/feeds']
 current_price_column_number = 6
@@ -31,7 +29,7 @@ sheet = spread_sheet_client.open('Finance').worksheet('MagicPort')
 # print(sheet.cell(2,6))
 
 def get_stock_latest_close_price(symbol):
-	response = requests.get('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey=NPO3RFGRVTFKRYCL'.format(symbol=symbol)).json()
+	response = requests.get('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={key}'.format(symbol=symbol, key=price_api_key)).json()
 	lastest_date = response['Meta Data']['3. Last Refreshed']
 	latest_price_at_close = response['Time Series (Daily)'][lastest_date]['4. close']
 	return float(latest_price_at_close)
