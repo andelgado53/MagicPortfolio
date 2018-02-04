@@ -27,3 +27,9 @@ class Portfolio:
 	def get_portfolio_profit(self):
 		return self.value - self.initial_investment
 
+	def get_portfolio_percent_growth(self):
+		return (self.value - self.initial_investment) / self.initial_investment
+
+	def get_portfolio_age_in_days(self):
+		pass
+
