@@ -32,4 +32,15 @@ class Portfolio:
 
 	def get_portfolio_age_in_days(self):
 		pass
+	
+	def is_stock_in_portfolio(self, stock_symbol):
+		for stock in self.holdings:
+			if stock.symbol.upper() == stock_symbol.upper():
+				return True
+		return False
 
+	def get_holding_from_symbol(self, stock_symbol):
+		for stock in self.holdings:
+			if stock.symbol.upper() == stock_symbol.upper():
+				return stock
+		return None
