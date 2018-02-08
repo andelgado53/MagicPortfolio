@@ -31,11 +31,3 @@ class StockHolding:
 
 	def get_percent_growth(self):
 		return (self.get_current_value() - self.get_initial_investment()) / self.get_initial_investment()
-
-
-# ntp = StockHolding('NTP', 100, '2017-12-01', 5.0, 2.5)
-
-# print(ntp.get_current_price())
-# print(ntp.get_holding_profit())
-# print(ntp.get_holding_days())
-# print(ntp.get_percent_growth())

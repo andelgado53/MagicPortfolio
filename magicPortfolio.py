@@ -1,5 +1,3 @@
-import gspread 
-from oauth2client.service_account import ServiceAccountCredentials
 import pprint
 import requests
 import json
@@ -10,8 +8,6 @@ from Portfolio import Portfolio
 from configuration import price_api_key, path_to_google_sheet_credentials
 from SheetsClient import SheetsClient
 
-
-scope = ['http://spreadsheets.google.com/feeds']
 current_price_column_number = 6
 stock_symbol_column_name = 'Stock'
 current_price_column_name = 'Current Price'
@@ -58,5 +54,3 @@ print('Current Portfolio value: ' + str(Magic_portfolio.get_portfolio_value()))
 print('Initial Investment: ' + str(Magic_portfolio.get_portfolio_initial_value()))
 print('Dollar Profit: ' + str(Magic_portfolio.get_portfolio_profit()))
 print('Percent Growth: ' + str(Magic_portfolio.get_portfolio_percent_growth()))
-
-
