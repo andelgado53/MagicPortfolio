@@ -1,35 +1,61 @@
 import requests, lxml.html
 from bs4 import BeautifulSoup
 import pprint
-from configuration import magic_portfolio_site_log_email, magic_portfolio_site_log_password
+from configuration import *
+from Portfolio import Portfolio
+from SheetsClient import SheetsClient
+from StockHolding import StockHolding
+from StockDataFetcher import StockDataFetcher
 
-magic_site_session = requests.session()
 
-login = magic_site_session.get('https://www.magicformulainvesting.com/Account/LogOn')
+stocks_sheets_name = 'Finance'
+stocks_worksheet_name = 'MagicPort'
+magic_website_session = requests.session()
+
+login = magic_website_session.get('https://www.magicformulainvesting.com/Account/LogOn')
 
 login_html = lxml.html.fromstring(login.text)
-hidden_inputs = login_html.xpath(r'//form//input[@type="hidden"]')
-form = {x.attrib["name"]: x.attrib["value"] for x in hidden_inputs}
-form['Email'] = magic_portfolio_site_log_email
-form['Password'] = magic_portfolio_site_log_password
-response = magic_site_session.post('https://www.magicformulainvesting.com/Account/LogOn', data=form)
+loggin_hidden_inputs = login_html.xpath(r'//loggin_form//input[@type="hidden"]')
+loggin_form = {x.attrib["name"]: x.attrib["value"] for x in loggin_hidden_inputs}
+loggin_form['Email'] = magic_portfolio_site_log_email
+loggin_form['Password'] = magic_portfolio_site_log_password
+magic_website_session.post('https://www.magicformulainvesting.com/Account/LogOn', data=loggin_form)
 
-form1 = {'MinimumMarketCap': 50, 'Select30': 'false'}
-res = magic_site_session.post('https://www.magicformulainvesting.com/Screening/StockScreening', form1)
+get_stock_recommendation_form = {'MinimumMarketCap': 50, 'Select30': 'false'}
+stock_selection_response = magic_website_session.post('https://www.magicformulainvesting.com/Screening/StockScreening', get_stock_recommendation_form)
 
-soup = BeautifulSoup(res.text, 'html.parser')
+soup = BeautifulSoup(stock_selection_response.text, 'html.parser')
 tables = soup.findChildren('table')
 stocks_selection_table = tables[-1]
 rows = stocks_selection_table.findChildren(['th', 'tr'])
-stocks = set()
+recommended_stocks = set()
 for row in rows:
     cells = row.findChildren('td')
-    # print(cells)
     if len(cells) > 0:
-        # print(cells[0].string + ' ' +  cells[1].string)
-        stocks.add(cells[1].string)
-    # for cell in cells:
-    #     print(cell.string)
+        recommended_stocks.add(cells[1].string)
 
-# pprint.pprint(rows[0])
-print(stocks)
+
+sheets_client = SheetsClient(path_to_google_sheet_credentials, stocks_sheets_name)
+sheet = sheets_client.get_worksheet(stocks_worksheet_name)
+
+stocks_in_portfolio = sheet.get_all_records()
+portfolio = []
+row_num = 2
+for stock in stocks_in_portfolio:
+	symbol = stock[stock_symbol_column_name]
+	current_price = stock[current_price_column_name][1:]
+	purchase_date = stock[purchase_date_column_name]
+	purchase_units = stock[purchase_units_column_name]
+	purchase_price = stock[purchase_price_column_name][1:]
+	status = stock[statu_column_name]
+	new_price = current_price
+	
+	if symbol and symbol not in ('cash', 'Totals'):
+		portfolio.append(StockHolding(symbol, purchase_units, purchase_date, purchase_price, new_price))
+		row_num += 1
+		
+Magic_portfolio = Portfolio(portfolio)
+
+for stock in recommended_stocks:
+    if not Magic_portfolio.is_stock_in_portfolio(stock):
+        print(str(stock) + ' most recent closing price: ' + str(StockDataFetcher(stock).get_stock_latest_close_price()))
