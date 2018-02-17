@@ -6,7 +6,7 @@ from Portfolio import Portfolio
 from SheetsClient import SheetsClient
 from StockHolding import StockHolding
 from StockDataFetcher import StockDataFetcher
-
+from PortfolioCreator import create_portfolio
 
 stocks_sheets_name = 'Finance'
 stocks_worksheet_name = 'MagicPort'
@@ -34,27 +34,10 @@ for row in rows:
     if len(cells) > 0:
         recommended_stocks.add(cells[1].string)
 
-
 sheets_client = SheetsClient(path_to_google_sheet_credentials, stocks_sheets_name)
 sheet = sheets_client.get_worksheet(stocks_worksheet_name)
 
-stocks_in_portfolio = sheet.get_all_records()
-portfolio = []
-row_num = 2
-for stock in stocks_in_portfolio:
-	symbol = stock[stock_symbol_column_name]
-	current_price = stock[current_price_column_name][1:]
-	purchase_date = stock[purchase_date_column_name]
-	purchase_units = stock[purchase_units_column_name]
-	purchase_price = stock[purchase_price_column_name][1:]
-	status = stock[statu_column_name]
-	new_price = current_price
-	
-	if symbol and symbol not in ('cash', 'Totals'):
-		portfolio.append(StockHolding(symbol, purchase_units, purchase_date, purchase_price, new_price))
-		row_num += 1
-		
-Magic_portfolio = Portfolio(portfolio)
+Magic_portfolio = Portfolio(create_portfolio(sheet.get_all_records()))
 
 for stock in recommended_stocks:
     if not Magic_portfolio.is_stock_in_portfolio(stock):

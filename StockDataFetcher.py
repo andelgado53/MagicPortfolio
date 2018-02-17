@@ -28,10 +28,3 @@ class StockDataFetcher:
         
     def get_close_price_at(self, date):
         return self.api_price_response['Time Series (Daily)'][date]['4. close']
-
-
-
-
-
-# c = StockDataFetcher('AMZN')
-# pprint.pprint(c.get_stock_latest_close_price())
