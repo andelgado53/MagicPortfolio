@@ -21,6 +21,6 @@ for stock in stocks:
     symbol = stock['Stock']
     if symbol and symbol != 'Total':
         new_price = StockDataFetcher(symbol).get_stock_latest_close_price()
-        print('Updating {symbol} to new price ${value:,.2f}'.format(symbol=symbol, price=new_price) + symbol)
+        print('Updating {symbol} to new price ${price:,.2f}'.format(symbol=symbol, price=new_price))
         sheet.update_cell(row_num, 3, new_price)   
     row_num += 1
