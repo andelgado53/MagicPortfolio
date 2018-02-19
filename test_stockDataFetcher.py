@@ -63,6 +63,14 @@ class testStockDataFetcher(TestCase):
     def test_get_close_price_at(self):
         response = self.subject.get_close_price_at('2017-09-27')
         self.assertEqual(response, float(mock_return('AMZN')['Time Series (Daily)']['2017-09-27']['4. close']))
+    
+    def test_remove_time_stamp_when_date_has_timestamp(self):
+        response = self.subject._remove_timestamp_from_date('2017-10-12 12:12:55')
+        self.assertEqual(response, '2017-10-12')
+
+    def test_remove_time_stamp_when_date_has_no_timestamp(self):
+        response = self.subject._remove_timestamp_from_date('2017-10-12')
+        self.assertEqual(response, '2017-10-12')
 
 
 if __name__ == '__main__':

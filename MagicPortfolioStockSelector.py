@@ -41,4 +41,5 @@ Magic_portfolio = Portfolio(create_portfolio(sheet.get_all_records()))
 
 for stock in recommended_stocks:
     if not Magic_portfolio.is_stock_in_portfolio(stock):
-        print(str(stock) + ' most recent closing price: ' + str(StockDataFetcher(stock).get_stock_latest_close_price()))
+        print(str(stock) + ' most recent closing price: ' 
+        + str(StockDataFetcher(stock).get_stock_latest_close_price()))
