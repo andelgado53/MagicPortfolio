@@ -9,6 +9,7 @@ from SheetsClient import SheetsClient
 from StockDataFetcher import StockDataFetcher
 from PortfolioCreator import create_portfolio
 import pprint
+import time
 
 today_date = date.today()
 
@@ -20,7 +21,7 @@ row_num = 2
 for stock in stocks:
     symbol = stock['Stock']
     if symbol and symbol != 'Total':
-        new_price = StockDataFetcher(symbol).get_stock_latest_close_price()
+        new_price = StockDataFetcher(symbol).get_price()
         print('Updating {symbol} to new price ${price:,.2f}'.format(symbol=symbol, price=new_price))
         sheet.update_cell(row_num, 3, new_price)   
     row_num += 1

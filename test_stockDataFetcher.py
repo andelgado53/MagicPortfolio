@@ -53,7 +53,7 @@ class testStockDataFetcher(TestCase):
         self.assertEqual(response, mock_return('AMZN')['Meta Data'])
 
     def test_get_stock_latest_close_price(self):
-        response = self.subject.get_stock_latest_close_price()
+        response = self.subject.get_price()
         self.assertEqual(response, float(mock_return('AMZN')['Time Series (Daily)']['2017-09-27']['4. close']))
     
     def test_get_stock_last_refreshed_date(self):
@@ -71,7 +71,6 @@ class testStockDataFetcher(TestCase):
     def test_remove_time_stamp_when_date_has_no_timestamp(self):
         response = self.subject._remove_timestamp_from_date('2017-10-12')
         self.assertEqual(response, '2017-10-12')
-
 
 if __name__ == '__main__':
     unittest.main()

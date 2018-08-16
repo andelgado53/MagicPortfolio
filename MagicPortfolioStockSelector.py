@@ -21,7 +21,7 @@ loggin_form['Email'] = magic_portfolio_site_log_email
 loggin_form['Password'] = magic_portfolio_site_log_password
 magic_website_session.post('https://www.magicformulainvesting.com/Account/LogOn', data=loggin_form)
 
-get_stock_recommendation_form = {'MinimumMarketCap': 50, 'Select30': 'false'}
+get_stock_recommendation_form = {'MinimumMarketCap': 50, 'Select50': 'false'}
 stock_selection_response = magic_website_session.post('https://www.magicformulainvesting.com/Screening/StockScreening', get_stock_recommendation_form)
 
 soup = BeautifulSoup(stock_selection_response.text, 'html.parser')
@@ -42,4 +42,11 @@ Magic_portfolio = Portfolio(create_portfolio(sheet.get_all_records()))
 for stock in recommended_stocks:
     if not Magic_portfolio.is_stock_in_portfolio(stock):
         print(str(stock) + ' most recent closing price: ' 
-        + str(StockDataFetcher(stock).get_stock_latest_close_price()))
+        + str(StockDataFetcher(stock).get_price()))
+
+print('************************************************')
+print('stocks that would be re purchased: ')
+for stock in recommended_stocks:
+    if Magic_portfolio.is_stock_in_portfolio(stock):
+        print(str(stock) + ' most recent closing price: ' 
+        + str(StockDataFetcher(stock).get_price()))

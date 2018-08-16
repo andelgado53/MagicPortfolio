@@ -1,6 +1,7 @@
 import requests
 import json
 import collections
+import time
 from datetime import date
 from StockHolding import StockHolding
 from Portfolio import Portfolio
@@ -26,10 +27,9 @@ def update_portfolio_prices(records):
 		if symbol and symbol not in ('cash', 'Totals'):
 			if status != 'Sold':
 				print('getting price for: ' + symbol)
-				new_price = StockDataFetcher(symbol).get_stock_latest_close_price()
+				new_price = StockDataFetcher(symbol).get_price()
 				sheet.update_cell(row_num, current_price_column_number, new_price)
 			row_num += 1
-
 update_portfolio_prices(stocks)
 
 portfolio = create_portfolio(sheet.get_all_records())
