@@ -7,10 +7,10 @@ def create_portfolio(records):
     row_num = 2
     for stock in records:
         symbol = stock[stock_symbol_column_name]
-        current_price = stock[current_price_column_name][1:]
+        current_price = stock[current_price_column_name][1:].replace(',', '')
         purchase_date = stock[purchase_date_column_name]
         purchase_units = stock[purchase_units_column_name]
-        purchase_price = stock[purchase_price_column_name][1:]
+        purchase_price = stock[purchase_price_column_name][1:].replace(',', '')
         new_price = current_price      
         if symbol and symbol not in ('cash', 'Totals'):
             portfolio.append(StockHolding(symbol, purchase_units, purchase_date, purchase_price, new_price))

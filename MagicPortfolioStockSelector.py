@@ -21,7 +21,7 @@ loggin_form['Email'] = magic_portfolio_site_log_email
 loggin_form['Password'] = magic_portfolio_site_log_password
 magic_website_session.post('https://www.magicformulainvesting.com/Account/LogOn', data=loggin_form)
 
-get_stock_recommendation_form = {'MinimumMarketCap': 30, 'Select50': 'false'}
+get_stock_recommendation_form = {'MinimumMarketCap': 50, 'Select50': 'false'}
 stock_selection_response = magic_website_session.post('https://www.magicformulainvesting.com/Screening/StockScreening', get_stock_recommendation_form)
 
 soup = BeautifulSoup(stock_selection_response.text, 'html.parser')
@@ -52,3 +52,4 @@ for stock in recommended_stocks:
         print(str(stock) + ' most recent closing price: ' 
         + str(StockDataFetcher(stock).get_price()))
         print('\t' + 'https://finance.yahoo.com/quote/{stock}'.format(stock=stock))
+        

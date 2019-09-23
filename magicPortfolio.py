@@ -32,13 +32,13 @@ def update_portfolio_prices(records, sheet_to_update):
 			row_num += 1
 update_portfolio_prices(stocks, sheet)
 
-portfolio = create_portfolio(sheet.get_all_records())
+# portfolio = create_portfolio(sheet.get_all_records())
 		
-Magic_portfolio = Portfolio(portfolio)
-print('Current Portfolio value: ${value:,.2f}'.format(value=Magic_portfolio.get_portfolio_value()))
-print('Initial Investment: ${value:,.2f}'.format(value=Magic_portfolio.get_portfolio_initial_value()))
-print('Dollar Profit: ${value:,.2f}'.format(value=Magic_portfolio.get_portfolio_profit()))
-print('Percent Growth: {growth:.2f}%'.format(growth=Magic_portfolio.get_portfolio_percent_growth() * 100))
+# Magic_portfolio = Portfolio(portfolio)
+# print('Current Portfolio value: ${value:,.2f}'.format(value=Magic_portfolio.get_portfolio_value()))
+# print('Initial Investment: ${value:,.2f}'.format(value=Magic_portfolio.get_portfolio_initial_value()))
+# print('Dollar Profit: ${value:,.2f}'.format(value=Magic_portfolio.get_portfolio_profit()))
+# print('Percent Growth: {growth:.2f}%'.format(growth=Magic_portfolio.get_portfolio_percent_growth() * 100))
 
 print("************************************")
 
